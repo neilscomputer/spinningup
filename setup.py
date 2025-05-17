@@ -28,6 +28,7 @@ setup(
         'scipy',
         'seaborn',
         'tensorflow',
+        'tensorflow-macos',
         'torch',
         'tqdm'
     ],
