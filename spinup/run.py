@@ -3,7 +3,8 @@ from spinup.user_config import DEFAULT_BACKEND
 from spinup.utils.run_utils import ExperimentGrid
 from spinup.utils.serialization_utils import convert_json
 import argparse
-import gym
+import gymnasium as gym
+import ale_py
 import json
 import os, subprocess, sys
 import os.path as osp
@@ -47,6 +48,7 @@ def friendly_err(err_msg):
 
 def parse_and_execute_grid_search(cmd, args):
     """Interprets algorithm name and cmd line args into an ExperimentGrid."""
+    gym.register_envs(ale_py)
 
     if cmd in BASE_ALGO_NAMES:
         backend = DEFAULT_BACKEND[cmd]
@@ -153,7 +155,7 @@ def parse_and_execute_grid_search(cmd, args):
 
     # Special handling for environment: make sure that env_name is a real,
     # registered gym environment.
-    valid_envs = [e.id for e in list(gym.envs.registry.all())]
+    valid_envs = [e.id for e in list(gym.envs.registry.values())]
     assert 'env_name' in arg_dict, \
         friendly_err("You did not give a value for --env_name! Add one and try again.")
     for env_name in arg_dict['env_name']:
